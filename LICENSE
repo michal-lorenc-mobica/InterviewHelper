@@ -3,7 +3,7 @@ BSD 3-Clause License
 Copyright (c) 2023, michal-lorenc-mobica
 All rights reserved.
 
-Used Open Source libraries: fyne-io/fyne https://github.com/fyne-io/fyne (BSD 3-Clause License)
+Used Open Source libraries: https://github.com/fyne-io/fyne (BSD 3-Clause License)
 
 Redistribution and use in source and binary forms, with or without
 modification, are permitted provided that the following conditions are met:
