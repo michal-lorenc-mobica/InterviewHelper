@@ -1,0 +1,44 @@
+    What are diferences between table and slice?
+	Slice dimension is dynamic. Uninitialized slice is NIL. Uninitialized table has default values for used type
+	What are modules?"
+	Modules are improved dependency management system. A collection of related go packages in a directory with a common go.mod file
+	How to convert string to []byte?
+	byteSlice := []byte("text")
+	When pointers are equal?
+	Pointers are equal if they point to the same variable or when they are NIL
+	What is "defer function"?
+	Function will be called just before exiting the code block where it is defined (after the body of the code block has been executed). Functions will be called in reverse order in the code (from the end)
+	Can two maps can be compared directly?
+	You cannot compare maps with each other directly but you can convert them to a string form and then compare them OR you can use reflect.DeepEqual
+	Is go a strong type language?
+	Yes
+	Is there a pointer arithmetics in golang?
+	No
+	Is there an exponentiation operator in golang?
+	No there is special function POW(x,y) for that
+	Is there a function overloading in golang?
+	No
+	What is iota?
+	Number generator for const counting from 0. Resets on the next const word encountered
+	What is RWMutex?
+	Mechanism to ensure that multiple goroutines can read data but only one goroutin can write data and reading will not be perform during writing
+	How to invoke Go Race Detector for main.go file?
+	go run -race main.go
+	What are GOOS and GOARCH flags?
+	They enable code compilation for selected platforms (example: "linux amd64")
+	When two tables are equal?
+	Arrays are equal if they have the same number of arguments the same values and the same order of elements
+	What is an anonymous struct? Where can you use them?
+	An anonymous struct is just like a normal struct but it is defined without a name and therefore cannot be referenced elsewhere in the code. If a struct is only meant to be used once (example: parsing specific JSON) then it makes no sense to declare it in a form usable for other developers.
+	Why to use Interfaces?
+	Interfaces are named collections of method signatures and are data encapsulation method. To use an interface you must implement all its methods. It is better to use more smaller interfaces than one big one
+	What is interface{} type?
+	Interface that has no methods which means that all types satisfy the empty interface
+	What does "concurrency" is?
+	We only do one process at a time but we have several to do at the same time. Sometimes one process has to wait for another's completion
+	What does "parallelism" is?
+	Running several processes simultaneously which requires several CPUs
+	goroutine vs thread
+	Goroutines are executed by the Go runtime program which runs in user space above the kernel known as the Go scheduler. Kernel is responsible for scheduling threads. Goroutines are faster that threads in general. Goroutines requires less space on stack than threads
+	When can panic occur in Go?
+  	Go panics when developer used panic() function or there is logical error in code (like sending data to closed channel)
