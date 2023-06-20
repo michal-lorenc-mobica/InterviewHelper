@@ -30,7 +30,7 @@ func loadData(fullPath string) error {
 
 	fileScanner.Split(bufio.ScanLines)
 	// mechanism to separate questions from answers - used convenction:
-	// is a single line for question (even line number) and single line for answer (odd line number)
+	// is a single line for question (odd line number) and single line for answer (even line number)
 	separator := 0
 	for fileScanner.Scan() {
 		if separator%2 == 0 {
@@ -40,6 +40,12 @@ func loadData(fullPath string) error {
 		}
 		separator++
 	}
+
+	// checking input data convention
+	if len(myQuestions) != len(myAnswers) {
+		return errors.New("wrong syntax convention - please check data correctness for your input file")
+	}
+	
 	return nil
 }
 
@@ -47,7 +53,7 @@ func main() {
 
 	err := loadData("./data.txt")
 	if err != nil {
-		fmt.Printf(err.Error())
+		fmt.Printf("%s\n", err.Error())
 		return
 	}
 
