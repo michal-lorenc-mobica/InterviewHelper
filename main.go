@@ -2,6 +2,7 @@ package main
 
 import (
 	"bufio"
+	"errors"
 	"fmt"
 	"image/color"
 	"math/rand"
@@ -29,7 +30,7 @@ func loadData(fullPath string) error {
 	fileScanner := bufio.NewScanner(file)
 
 	fileScanner.Split(bufio.ScanLines)
-	// mechanism to separate questions from answers - used convenction:
+	// mechanism to separate questions from answers - used convention:
 	// is a single line for question (odd line number) and single line for answer (even line number)
 	separator := 0
 	for fileScanner.Scan() {
@@ -45,7 +46,7 @@ func loadData(fullPath string) error {
 	if len(myQuestions) != len(myAnswers) {
 		return errors.New("wrong syntax convention - please check data correctness for your input file")
 	}
-	
+
 	return nil
 }
 
@@ -79,20 +80,51 @@ func main() {
 	index := 0
 	questionGenerated := false
 
+	examMode := widget.NewCheck("Exam Mode", func(value bool) {
+		fmt.Println("Check set to", value)
+	})
+
+	examMode.OnChanged = func(bool) {
+		answerText.SetText("")
+		questionText.SetText("")
+		index = 0
+	}
+
 	buttonQuestion := widget.NewButton("Generate question", func() {
 		// clean answer field
 		answerText.SetText("")
 
-		index = rand.Intn(len(myQuestions))
-		questionText.SetText(myQuestions[index])
+		if !examMode.Checked {
+			index = rand.Intn(len(myQuestions))
+			questionText.SetText(myQuestions[index])
+		} else {
+			if index < len(myQuestions) {
+				questionText.SetText(myQuestions[index])
+				index += 1
+			} else {
+				examMode.SetChecked(false)
+				index = 0
+			}
+		}
 		questionGenerated = true
 	})
 
 	buttonAnswer := widget.NewButton("Show answer", func() {
-		if questionGenerated {
-			answerText.SetText(myAnswers[index])
+
+		if questionGenerated && questionText.Text != "" {
+			if index > len(myQuestions) {
+				examMode.SetChecked(false)
+				index = 0
+			} else {
+				if examMode.Checked {
+					answerText.SetText(myAnswers[index-1])
+				} else {
+					answerText.SetText(myAnswers[index])
+				}
+			}
 		} else {
 			answerText.SetText("Please generate question first")
+			index = 0
 		}
 	})
 
@@ -100,7 +132,7 @@ func main() {
 	line.StrokeWidth = 1
 
 	textLabelBar := container.New(layout.NewVBoxLayout(), questionLabel, questionText, layout.NewSpacer(), spacer, answerLabel, answerText)
-	buttonsBar := container.New(layout.NewHBoxLayout(), layout.NewSpacer(), buttonQuestion, buttonAnswer, layout.NewSpacer())
+	buttonsBar := container.New(layout.NewHBoxLayout(), layout.NewSpacer(), buttonQuestion, buttonAnswer, examMode, layout.NewSpacer())
 	myWindow.SetContent(container.New(layout.NewVBoxLayout(), textLabelBar, layout.NewSpacer(), line, buttonsBar))
 	myWindow.ShowAndRun()
 }

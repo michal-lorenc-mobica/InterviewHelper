@@ -1,6 +1,6 @@
     What are diferences between table and slice?
 	Slice dimension is dynamic. Uninitialized slice is NIL. Uninitialized table has default values for used type
-	What are modules?"
+	What are modules?
 	Modules are improved dependency management system. A collection of related go packages in a directory with a common go.mod file
 	How to convert string to []byte?
 	byteSlice := []byte("text")
