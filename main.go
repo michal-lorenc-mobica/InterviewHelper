@@ -31,7 +31,7 @@ func loadData(fullPath string) error {
 
 	fileScanner.Split(bufio.ScanLines)
 	// mechanism to separate questions from answers - used convention:
-	// is a single line for question (even line number) and single line for answer (odd line number)
+	// is a single line for question (odd line number) and single line for answer (even line number)
 	separator := 0
 	for fileScanner.Scan() {
 		if separator%2 == 0 {
