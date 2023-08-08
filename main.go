@@ -7,6 +7,7 @@ import (
 	"image/color"
 	"math/rand"
 	"os"
+	"time"
 
 	"fyne.io/fyne/v2"
 	"fyne.io/fyne/v2/app"
@@ -18,6 +19,7 @@ import (
 
 var myQuestions []string
 var myAnswers []string
+var examTimeStart time.Time
 
 func loadData(fullPath string) error {
 
@@ -80,6 +82,8 @@ func main() {
 	index := 0
 	questionGenerated := false
 
+	examLengthLabel := widget.NewLabel("")
+
 	examMode := widget.NewCheck("Exam Mode", func(value bool) {
 		fmt.Println("Check set to", value)
 	})
@@ -88,6 +92,14 @@ func main() {
 		answerText.SetText("")
 		questionText.SetText("")
 		index = 0
+		if examMode.Checked {
+			examTimeStart = time.Now()
+			examLengthLabel.SetText("")
+		} else {
+			examLength := time.Since(examTimeStart)
+			examLengthString := "Exam took: " + examLength.String()
+			examLengthLabel.SetText(examLengthString)
+		}
 	}
 
 	buttonQuestion := widget.NewButton("Generate question", func() {
@@ -132,7 +144,7 @@ func main() {
 	line.StrokeWidth = 1
 
 	textLabelBar := container.New(layout.NewVBoxLayout(), questionLabel, questionText, layout.NewSpacer(), spacer, answerLabel, answerText)
-	buttonsBar := container.New(layout.NewHBoxLayout(), layout.NewSpacer(), buttonQuestion, buttonAnswer, examMode, layout.NewSpacer())
+	buttonsBar := container.New(layout.NewHBoxLayout(), layout.NewSpacer(), buttonQuestion, buttonAnswer, examMode, layout.NewSpacer(), examLengthLabel)
 	myWindow.SetContent(container.New(layout.NewVBoxLayout(), textLabelBar, layout.NewSpacer(), line, buttonsBar))
 	myWindow.ShowAndRun()
 }
